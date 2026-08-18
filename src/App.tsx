@@ -8,20 +8,28 @@ import Publications from '@/components/Publications';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import SkillsMarquee from '@/components/SkillsMarquee';
+import CustomCursor from '@/components/CustomCursor';
+import ScrollProgress from '@/components/ScrollProgress';
+import Aurora from '@/components/Aurora';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#05060a] text-[#e8edf7] overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <SkillsMarquee />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Publications />
-      <Contact />
-      <Footer />
+    <div className="relative min-h-screen bg-[#05060a] text-[#e8edf7] overflow-x-hidden">
+      <Aurora />
+      <CustomCursor />
+      <ScrollProgress />
+      <div className="relative z-10">
+        <Navbar />
+        <Hero />
+        <SkillsMarquee />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Publications />
+        <Contact />
+        <Footer />
+      </div>
     </div>
   );
 }

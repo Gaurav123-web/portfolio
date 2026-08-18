@@ -13,10 +13,23 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('');
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const sections = links.map((l) => document.querySelector(l.href));
+      const mid = window.scrollY + window.innerHeight / 3;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = sections[i] as HTMLElement | null;
+        if (el && el.offsetTop <= mid) {
+          setActive(links[i].href);
+          return;
+        }
+      }
+    };
     window.addEventListener('scroll', onScroll);
+    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -27,7 +40,8 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="#hero" className="font-mono text-sm tracking-widest text-[#5eead4]">
+        <a href="#hero" className="font-mono text-sm tracking-widest text-[#5eead4] flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-[#5eead4] glow-accent" />
           PW<span className="text-white">.</span>
         </a>
         <div className="hidden md:flex items-center gap-8">
@@ -35,10 +49,16 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-[#8a93a8] hover:text-white transition-colors relative group"
+              className={`text-sm transition-colors relative group ${
+                active === l.href ? 'text-white' : 'text-[#8a93a8] hover:text-white'
+              }`}
             >
               {l.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#5eead4] group-hover:w-full transition-all duration-300" />
+              <span
+                className={`absolute -bottom-1 left-0 h-px bg-[#5eead4] transition-all duration-300 ${
+                  active === l.href ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}
+              />
             </a>
           ))}
           <a
@@ -63,7 +83,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="text-sm text-[#8a93a8] hover:text-white"
+              className={`text-sm ${active === l.href ? 'text-[#5eead4]' : 'text-[#8a93a8] hover:text-white'}`}
             >
               {l.label}
             </a>
